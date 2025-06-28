@@ -112,3 +112,22 @@ button {
   text-decoration: none;
   color: black;
 }
+.floating-contact {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #111;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  z-index: 9999;
+  color: gold;
+  box-shadow: 0 0 10px #000;
+}
+
+.floating-contact a {
+  color: gold;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 5px;
+}
