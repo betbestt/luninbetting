@@ -9,6 +9,21 @@
 </head>
 <body>
   <main class="container">
+
+  
+  <section class="hero">
+    <video autoplay muted loop class="hero-video">
+      <source src="https://cdn.coverr.co/videos/coverr-football-players-on-a-pitch-2073/1080p.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="hero-content">
+      <h1>Welcome to LuninBetting</h1>
+      <p>Your #1 Source for Winning Football Predictions</p>
+      <a href="#plans" class="btn-glow">📊 View Subscription Plans</a>
+    </div>
+  </section>
+
+
     <h1>Welcome to LuninBetting</h1>
     <p>Choose your plan and subscribe for accurate football predictions!</p>
 
@@ -42,6 +57,38 @@
       <a href="tips.html" class="btn-glow">🔐 Login to Tips Page</a>
     </div>
 
-  </main>
+  
+<section class="testimonials">
+  <h2>What Our Members Say</h2>
+  <div class="carousel">
+    <div class="testimonial active">🔥 "I won my first 3 bets using your tips. Unbelievable!" – Brian K.</div>
+    <div class="testimonial">⚽ "Halftime/Fulltime tips are always 🔥 accurate." – Lisa M.</div>
+    <div class="testimonial">💯 "Subscribed for a month. Best $150 I’ve spent!" – Patrick O.</div>
+  </div>
+</section>
+
+</main>
+
+  <footer class="contact-footer">
+    <p>📧 <a href="mailto:luninbetting@gmail.com">luninbetting@gmail.com</a></p>
+    <p>📱 <a href="https://wa.me/13307283483" target="_blank">Chat with us on WhatsApp</a></p>
+  </footer>
+
+
+<a href="https://wa.me/13307283483" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+  💬
+</a>
+
+
+<script>
+let current = 0;
+const testimonials = document.querySelectorAll('.testimonial');
+setInterval(() => {
+  testimonials[current].classList.remove('active');
+  current = (current + 1) % testimonials.length;
+  testimonials[current].classList.add('active');
+}, 4000);
+</script>
+
 </body>
 </html>

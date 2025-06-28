@@ -46,3 +46,32 @@ button {
   transform: scale(1.05);
   box-shadow: 0 0 25px orange;
 }
+
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+  background: url('https://images.unsplash.com/photo-1597764699515-e0f5c7c2f3ec') no-repeat center center;
+  background-size: cover;
+  color: white;
+}
+.hero h1 {
+  font-size: 3rem;
+  color: gold;
+}
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.contact-footer {
+  text-align: center;
+  margin: 40px auto 20px;
+  padding: 20px;
+  background-color: #222;
+  color: #fff;
+}
+.contact-footer a {
+  color: gold;
+  text-decoration: none;
+}
