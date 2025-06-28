@@ -2,24 +2,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Secure Tips - LuninBetting</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"/>
   <style>
     .login-box {
       text-align: center;
       margin-top: 100px;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       padding: 30px;
       border-radius: 10px;
       max-width: 400px;
       margin-left: auto;
       margin-right: auto;
     }
+    .tips-list {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body class="fade-in">
+
   <div class="login-box">
     <h2>Enter Password to View Tips</h2>
     <input type="password" id="password" placeholder="Enter password">
@@ -29,7 +36,13 @@
 
   <div id="tips" style="display:none;" class="container tips">
     <h1>Today's Tips</h1>
-    <div id="tipsContent">Loading tips...</div>
+    <div class="tips-list">
+      <ul>
+        <li>Correct Score: Arsenal 2-1 Chelsea</li>
+        <li>Halftime/Fulltime: Man City/Man City</li>
+        <li>Over 2.5 Goals: Liverpool vs Aston Villa</li>
+      </ul>
+    </div>
   </div>
 
   <script>
@@ -39,23 +52,11 @@
       if (input === correctPassword) {
         document.querySelector(".login-box").style.display = "none";
         document.getElementById("tips").style.display = "block";
-        loadTips();
       } else {
         document.getElementById("error").textContent = "Incorrect password!";
       }
     }
-
-    function loadTips() {
-      fetch('tips.json')
-        .then(res => res.json())
-        .then(data => {
-          const tipsDiv = document.getElementById("tipsContent");
-          tipsDiv.innerHTML = "<ul>" + data.tips.map(t => `<li>${t}</li>`).join('') + "</ul>";
-        })
-        .catch(err => {
-          document.getElementById("tipsContent").textContent = "Failed to load tips.";
-        });
-    }
   </script>
+
 </body>
 </html>
