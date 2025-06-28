@@ -2,24 +2,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard - LuninBetting</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      padding: 30px;
+    }
+    h1, h2 {
+      color: gold;
+    }
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      height: 120px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 10px;
+      font-family: monospace;
+    }
+    .btn {
+      background: gold;
+      color: black;
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .output {
+      background: #222;
+      color: lime;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+    .section {
+      margin-bottom: 50px;
+    }
+  </style>
 </head>
-<body class="fade-in">
-  <div class="container tips">
-    <h1>Admin Panel - Manage Tips</h1>
-    <textarea id="tipsInput" rows="10" placeholder="Enter tips, one per line"></textarea><br>
-    <button class="btn" onclick="generateJSON()">Generate Tips JSON</button>
-    <pre id="output" style="margin-top:20px;background:#111;color:#0f0;padding:10px;"></pre>
+<body>
+  <h1>Admin Panel - LuninBetting</h1>
+
+  <div class="section">
+    <h2>Correct Score Tips</h2>
+    <textarea id="correctInput" placeholder="One tip per line..."></textarea><br>
+    <button class="btn" onclick="generateJSON('correct')">Generate JSON</button>
+    <pre class="output" id="correctOutput"></pre>
+  </div>
+
+  <div class="section">
+    <h2>Halftime / Fulltime Tips</h2>
+    <textarea id="halftimeInput" placeholder="One tip per line..."></textarea><br>
+    <button class="btn" onclick="generateJSON('halftime')">Generate JSON</button>
+    <pre class="output" id="halftimeOutput"></pre>
   </div>
 
   <script>
-    function generateJSON() {
-      const tips = document.getElementById("tipsInput").value.trim().split("\n");
+    function generateJSON(type) {
+      const inputId = type === 'correct' ? "correctInput" : "halftimeInput";
+      const outputId = type === 'correct' ? "correctOutput" : "halftimeOutput";
+      const tips = document.getElementById(inputId).value.trim().split("\n");
       const json = { tips: tips };
-      document.getElementById("output").textContent = JSON.stringify(json, null, 2);
+      document.getElementById(outputId).textContent = JSON.stringify(json, null, 2);
     }
   </script>
 </body>
