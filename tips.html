@@ -4,14 +4,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Betting Tips - LuninBetting</title>
+  <title>Secure Tips - LuninBetting</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .login-box {
+      text-align: center;
+      margin-top: 100px;
+      background: rgba(0,0,0,0.7);
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
 </head>
 <body class="fade-in">
-  <div class="container tips">
-    <h1>Thank You for Subscribing!</h1>
-    <p>Click the button below to access today's tips.</p>
-    <a href="https://t.me/luninbetting" class="btn">Get Tips on Telegram</a>
+  <div class="login-box">
+    <h2>Enter Password to View Tips</h2>
+    <input type="password" id="password" placeholder="Enter password">
+    <button class="btn" onclick="checkPassword()">Access</button>
+    <p id="error" style="color:red;"></p>
   </div>
+
+  <div id="tips" style="display:none;" class="container tips">
+    <h1>Today's Tips</h1>
+    <div id="tipsContent">Loading tips...</div>
+  </div>
+
+  <script>
+    const correctPassword = "lunin2025";
+    function checkPassword() {
+      const input = document.getElementById("password").value;
+      if (input === correctPassword) {
+        document.querySelector(".login-box").style.display = "none";
+        document.getElementById("tips").style.display = "block";
+        loadTips();
+      } else {
+        document.getElementById("error").textContent = "Incorrect password!";
+      }
+    }
+
+    function loadTips() {
+      fetch('tips.json')
+        .then(res => res.json())
+        .then(data => {
+          const tipsDiv = document.getElementById("tipsContent");
+          tipsDiv.innerHTML = "<ul>" + data.tips.map(t => `<li>${t}</li>`).join('') + "</ul>";
+        })
+        .catch(err => {
+          document.getElementById("tipsContent").textContent = "Failed to load tips.";
+        });
+    }
+  </script>
 </body>
 </html>
