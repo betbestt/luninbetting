@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,19 +13,42 @@
 
   <main>
     <h2>Our Subscription Plans</h2>
+
     <div class="plan">
       <h3>Correct Score Predictions</h3>
       <p>$150</p>
-      <a href="https://www.paypal.com/paypalme/YOURPAYPAL/150" class="btn">Subscribe Now</a>
+      <a href="#payment" class="btn">Subscribe Now</a>
     </div>
 
     <div class="plan">
       <h3>Halftime/Fulltime Correct Score</h3>
       <p>$80</p>
-      <a href="https://www.paypal.com/paypalme/YOURPAYPAL/80" class="btn">Subscribe Now</a>
+      <a href="#payment" class="btn">Subscribe Now</a>
     </div>
 
-    <p>After payment, send proof to <strong>@YourTelegram</strong> or <strong>email@example.com</strong></p>
+    <section id="payment">
+      <h3>Make Your Payment</h3>
+      <p><strong>Pay via M-Pesa PayBill:</strong></p>
+      <p><strong>Pay Bill Number:</strong> 880100</p>
+      <p><strong>Account Number:</strong> 8912690011</p>
+      <p><strong>Amount:</strong> USD 150 or USD 80 (convert to KES)</p>
+      <p>After payment, send proof via:</p>
+      <ul>
+        <li>WhatsApp: <a href="https://wa.me/13307283483">+13307283483</a></li>
+        <li>Email: <a href="mailto:luninbetting@gmail.com">luninbetting@gmail.com</a></li>
+      </ul>
+    </section>
+
+    <section id="form">
+      <h3>Submit Payment Confirmation</h3>
+      <form action="https://formsubmit.co/luninbetting@gmail.com" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Your Full Name" required><br><br>
+        <input type="email" name="email" placeholder="Your Email" required><br><br>
+        <input type="text" name="amount" placeholder="Amount Paid (e.g. $150)" required><br><br>
+        <input type="file" name="proof" accept="image/*"><br><br>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </section>
   </main>
 
   <footer>
