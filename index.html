@@ -6,17 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LuninBetting Company</title>
   <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <header class="header">
+
+  <div id="loader" class="loader"></div>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <h1 class="logo">LuninBetting</h1>
+      <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+      <ul class="nav-menu">
+        <li><a href="#plans">Plans</a></li>
+        <li><a href="#payment">Pay</a></li>
+        <li><a href="#form">Confirm</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="header fade-in">
     <div class="container">
-      <h1>LuninBetting Company</h1>
+      <h1>Welcome to LuninBetting Company</h1>
       <p>Your Gateway to Winning Bets</p>
     </div>
   </header>
 
-  <main class="container">
-    <section class="plans">
+  <main class="container fade-in">
+    <section id="plans" class="plans">
       <h2>Subscription Plans</h2>
       <div class="plan-cards">
         <div class="card">
@@ -33,22 +49,24 @@
     </section>
 
     <section id="payment" class="payment">
-      <h2>How to Pay</h2>
+      <h2>Payment Options</h2>
+      <h3>For Kenya</h3>
       <ul>
         <li><strong>PayBill Number:</strong> 880100</li>
         <li><strong>Account Number:</strong> 8912690011</li>
-        <li>Convert USD to KES before payment</li>
       </ul>
-      <p>Send proof via:</p>
+      <h3>International Payments</h3>
       <ul>
-        <li>WhatsApp: <a href="https://wa.me/13307283483">+13307283483</a></li>
-        <li>Email: <a href="mailto:luninbetting@gmail.com">luninbetting@gmail.com</a></li>
+        <li><strong>Ghana:</strong> PayPal – <a href="https://paypal.me/luninbetting">paypal.me/luninbetting</a></li>
+        <li><strong>Nigeria:</strong> PayPal – <a href="https://paypal.me/luninbetting">paypal.me/luninbetting</a></li>
+        <li><strong>USA:</strong> CashApp – Contact admin via <a href="https://wa.me/13307283483">WhatsApp</a></li>
+        <li><strong>UK / Europe:</strong> Use <a href="https://www.ofx.com">OFX</a> – Contact admin for details</li>
       </ul>
     </section>
 
     <section id="form" class="form-section">
       <h2>Submit Payment Confirmation</h2>
-      <form action="https://formsubmit.co/luninbetting@gmail.com" method="POST" enctype="multipart/form-data">
+      <form action="https://formsubmit.co/luninbetting@gmail.com" onsubmit="window.location.href='tips.html';" method="POST" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Your Full Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
         <input type="text" name="amount" placeholder="Amount Paid (e.g. $150)" required>
@@ -56,10 +74,30 @@
         <button type="submit" class="btn">Submit</button>
       </form>
     </section>
+  
+    <section class="testimonials">
+      <h2>What Our Subscribers Say</h2>
+      <div class="testimonial-cards">
+        <div class="testimonial">
+          <p>"Won 3 times this week! 🔥 LuninBetting is legit!"</p>
+          <h4>— Samuel K.</h4>
+        </div>
+        <div class="testimonial">
+          <p>"I started small, and the results are crazy! Highly recommend."</p>
+          <h4>— Angela N.</h4>
+        </div>
+        <div class="testimonial">
+          <p>"Clear predictions and good customer service."</p>
+          <h4>— Brian O.</h4>
+        </div>
+      </div>
+    </section>
   </main>
+  
 
   <footer class="footer">
     <p>&copy; 2025 LuninBetting Company</p>
   </footer>
+
 </body>
 </html>
