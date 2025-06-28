@@ -7,6 +7,12 @@
   <title>LuninBetting Company</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
+
+<div id="alertBanner" class="alert-banner">
+  🔥 New tips just released! Check the correct score section now.
+  <span class="close-btn" onclick="document.getElementById('alertBanner').style.display='none'">✖</span>
+</div>
+
 <body>
   <main class="container">
 
@@ -94,6 +100,16 @@ setInterval(() => {
 <div style="text-align: center; margin-top: 60px;">
   <a href="admin-login.html" class="btn-glow" style="font-size: 14px; padding: 8px 16px;">🔐 Admin Login</a>
 </div>
+
+
+<script>
+  setTimeout(() => {
+    const banner = document.getElementById('alertBanner');
+    if (banner) {
+      banner.style.display = 'none';
+    }
+  }, 10000); // auto-hide after 10 seconds
+</script>
 
 </body>
 </html>
