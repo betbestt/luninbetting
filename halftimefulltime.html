@@ -91,6 +91,15 @@
 </head>
 <body>
 
+<script>
+  const allowedPasswords = { halftimefulltime: "small25" };
+  const userPassword = prompt("🔒 Enter your subscription password to view tips:");
+  if (userPassword !== allowedPasswords.halftimefulltime) {
+    alert("❌ Incorrect password. Access denied.");
+    document.body.innerHTML = "<h2 style='color: red; text-align: center; margin-top: 100px;'>Access Denied</h2>";
+  }
+</script>
+
   <div class="container">
     <h1>🎯 Halftime / Fulltime Tips</h1>
     <p class="subtitle">Only for subscribed members — updated regularly</p>
@@ -102,14 +111,14 @@
     </div>
 
     <div id="day1" class="tab-content">
-      <h2 style="color: #fff;">Tips for 29th June 2025</h2>
+      <h2>Tips for 29th June 2025</h2>
       <div class="tip">⚽ PSG vs Inter Miami – PSG to win with over 3.5 goals</div>
       <div class="tip">⚽ Flamengo vs Bayern Munich – Both teams to score in each half and over 5.5</div>
       <div class="tip">⚽ ARGENTINA PRIMERA – San Martin T vs Patronato – x/2</div>
     </div>
 
     <div id="day2" class="tab-content" style="display:none;">
-      <h2 style="color: #fff;">Tips for 30th June 2025</h2>
+      <h2>Tips for 30th June 2025</h2>
       <div class="tip">⚽ CHINA SUPER LEAGUE – Henan vs Shandong Taishan – Both halves over 1.5</div>
       <div class="tip">⚽ ICELAND DIVISION 2 – Grota vs Haukar – Both halves over 1.5</div>
       <div class="tip">⚽ Inter Milan vs Fluminense – Under 2.5</div>
@@ -127,27 +136,37 @@
     🔄 Keep refreshing this page — more tips will be updated often!
   </div>
 
-  <script>
-    function copyTips() {
-      const tips = Array.from(document.querySelectorAll('.tab-content'))
-        .filter(tab => tab.style.display !== 'none')
-        .flatMap(tab => Array.from(tab.querySelectorAll('.tip')))
-        .map(t => t.textContent)
-        .join('\\n');
-      navigator.clipboard.writeText(tips).then(() => {
-        alert('Tips copied to clipboard!');
-      });
-    }
+<script>
+  function copyTips() {
+    const tips = Array.from(document.querySelectorAll('.tab-content'))
+      .filter(tab => tab.style.display !== 'none')
+      .flatMap(tab => Array.from(tab.querySelectorAll('.tip')))
+      .map(t => t.textContent)
+      .join('\n');
+    navigator.clipboard.writeText(tips).then(() => {
+      alert('Tips copied to clipboard!');
+    });
+  }
 
-    function showTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.style.display = 'none';
-      });
-      document.getElementById(tabId).style.display = 'block';
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.style.display = 'none';
+    });
+    document.getElementById(tabId).style.display = 'block';
+  }
+
+  window.onload = function () {
+    const today = new Date().getDate();
+    if (today === 30) {
+      showTab('day2');
+    } else {
+      showTab('day1');
     }
-  </script>
+  };
+</script>
 
 </body>
 </html>
+
 
 
