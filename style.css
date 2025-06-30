@@ -1,4 +1,3 @@
-
 body {
   font-family: Arial, sans-serif;
   background: #111;
@@ -6,9 +5,11 @@ body {
   margin: 0;
   padding: 0 20px;
 }
+
 h1, h2 {
   color: gold;
 }
+
 input, textarea, button {
   display: block;
   width: 100%;
@@ -16,6 +17,7 @@ input, textarea, button {
   margin: 10px auto;
   padding: 10px;
 }
+
 button {
   background: gold;
   color: black;
@@ -23,6 +25,7 @@ button {
   cursor: pointer;
   border-radius: 6px;
 }
+
 .container {
   max-width: 800px;
   margin: auto;
@@ -41,12 +44,12 @@ button {
   box-shadow: 0 0 15px gold;
   transition: all 0.3s ease-in-out;
 }
+
 .btn-glow:hover {
   background: linear-gradient(45deg, orange, gold);
   transform: scale(1.05);
   box-shadow: 0 0 25px orange;
 }
-
 
 .hero {
   text-align: center;
@@ -55,10 +58,12 @@ button {
   background-size: cover;
   color: white;
 }
+
 .hero h1 {
   font-size: 3rem;
   color: gold;
 }
+
 .hero p {
   font-size: 1.2rem;
   margin-bottom: 20px;
@@ -71,11 +76,11 @@ button {
   background-color: #222;
   color: #fff;
 }
+
 .contact-footer a {
   color: gold;
   text-decoration: none;
 }
-
 
 .alert-banner {
   position: fixed;
@@ -90,12 +95,98 @@ button {
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   font-size: 16px;
 }
+
 .alert-banner .close-btn {
   margin-left: 20px;
   cursor: pointer;
   font-weight: normal;
 }
 
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.plan-card {
+  background: #222;
+  border: 1px solid gold;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 400px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.testimonial {
+  background: #111;
+  padding: 20px;
+  margin: 20px auto;
+  border-left: 4px solid gold;
+  max-width: 600px;
+  font-style: italic;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+}
+
+.testimonial .stars {
+  color: gold;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.email-collect input,
+.email-collect button {
+  padding: 12px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 6px;
+}
+
+.email-collect button {
+  background: gold;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.bottom-share {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px 10px;
+  background: #111;
+  color: gold;
+  font-size: 16px;
+}
+
+.bottom-share a {
+  color: gold;
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+footer {
+  color: #aaa;
+  font-size: 14px;
+  padding: 20px;
+}
 
 .floating-share {
   position: fixed;
@@ -108,10 +199,12 @@ button {
   font-weight: bold;
   box-shadow: 0 0 10px #000;
 }
+
 .floating-share a {
   text-decoration: none;
   color: black;
 }
+
 .floating-contact {
   position: fixed;
   bottom: 20px;
@@ -131,3 +224,4 @@ button {
   display: block;
   margin-bottom: 5px;
 }
+
