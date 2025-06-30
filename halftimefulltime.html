@@ -64,6 +64,29 @@
       font-size: 14px;
       margin-bottom: 20px;
     }
+    .tab-btn {
+      padding: 10px 15px;
+      margin: 0 5px 20px;
+      background: #222;
+      color: gold;
+      border: 1px solid gold;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .tab-btn:hover {
+      background: gold;
+      color: black;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .back-link a {
+      color: gold;
+      text-decoration: none;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -73,18 +96,31 @@
     <p class="subtitle">Only for subscribed members — updated regularly</p>
     <p class="last-updated">Last updated: June 29, 2025</p>
 
-    <h2 style="color: #fff;">Tips for 29th June 2025</h2>
-    <div class="tip">⚽ PSG vs Inter Miami – PSG to win with over 3.5 goals</div>
-    <div class="tip">⚽ Flamengo vs Bayern Munich – Both teams to score in each half and over 5.5</div>
-    <div class="tip">⚽ ARGENTINA PRIMERA – San Martin T vs Patronato – x/2</div>
+    <div style="text-align: center;">
+      <button onclick="showTab('day1')" class="tab-btn">📅 29th June</button>
+      <button onclick="showTab('day2')" class="tab-btn">📅 30th June</button>
+    </div>
 
-    <h2 style="color: #fff; margin-top: 30px;">Tips for 30th June 2025</h2>
-    <div class="tip">⚽ CHINA SUPER LEAGUE – Henan vs Shandong Taishan – Both halves over 1.5</div>
-    <div class="tip">⚽ ICELAND DIVISION 2 – Grota vs Haukar – Both halves over 1.5</div>
-    <div class="tip">⚽ Inter Milan vs Fluminense – Under 2.5</div>
-    <div class="tip">⚽ MORE TO COME</div>
+    <div id="day1" class="tab-content">
+      <h2 style="color: #fff;">Tips for 29th June 2025</h2>
+      <div class="tip">⚽ PSG vs Inter Miami – PSG to win with over 3.5 goals</div>
+      <div class="tip">⚽ Flamengo vs Bayern Munich – Both teams to score in each half and over 5.5</div>
+      <div class="tip">⚽ ARGENTINA PRIMERA – San Martin T vs Patronato – x/2</div>
+    </div>
+
+    <div id="day2" class="tab-content" style="display:none;">
+      <h2 style="color: #fff;">Tips for 30th June 2025</h2>
+      <div class="tip">⚽ CHINA SUPER LEAGUE – Henan vs Shandong Taishan – Both halves over 1.5</div>
+      <div class="tip">⚽ ICELAND DIVISION 2 – Grota vs Haukar – Both halves over 1.5</div>
+      <div class="tip">⚽ Inter Milan vs Fluminense – Under 2.5</div>
+      <div class="tip">⚽ MORE TO COME</div>
+    </div>
 
     <button class="copy-btn" onclick="copyTips()">📋 Copy All Tips</button>
+
+    <div class="back-link">
+      <a href="index.html">⬅️ Back to Dashboard</a>
+    </div>
   </div>
 
   <div class="refresh-note">
@@ -93,13 +129,25 @@
 
   <script>
     function copyTips() {
-      const tips = Array.from(document.querySelectorAll('.tip')).map(t => t.textContent).join('\\n');
+      const tips = Array.from(document.querySelectorAll('.tab-content'))
+        .filter(tab => tab.style.display !== 'none')
+        .flatMap(tab => Array.from(tab.querySelectorAll('.tip')))
+        .map(t => t.textContent)
+        .join('\\n');
       navigator.clipboard.writeText(tips).then(() => {
         alert('Tips copied to clipboard!');
       });
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+      document.getElementById(tabId).style.display = 'block';
     }
   </script>
 
 </body>
 </html>
+
 
