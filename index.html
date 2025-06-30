@@ -2,85 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LuninBetting Company</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="icon" href="favicon.ico" type="image/x-icon"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #000;
-      color: #fff;
-    }
-    .hero {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
-    .hero-video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-    }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 60px 20px;
-      text-align: center;
-    }
-    .btn-glow {
-      background: gold;
-      color: black;
-      padding: 12px 24px;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .btn-glow:hover {
-      background: #fff700;
-    }
-    .alert-banner {
-      background: gold;
-      color: black;
-      padding: 10px;
-      text-align: center;
-      font-weight: bold;
-    }
-    .close-btn {
-      float: right;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .plan-card {
-      background: #111;
-      border: 1px solid gold;
-      padding: 20px;
-      margin: 10px auto;
-      max-width: 400px;
-      border-radius: 10px;
-      text-align: center;
-    }
-    .testimonial {
-      background: #111;
-      padding: 20px;
-      margin: 10px;
-      border-left: 4px solid gold;
-    }
-    footer, .bottom-share, .contact-footer {
-      text-align: center;
-      background: #111;
-      padding: 20px;
-      color: gold;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="alertBanner" class="alert-banner">
@@ -101,16 +25,15 @@
       </div>
     </section>
 
+    <h1>Welcome to LuninBetting</h1>
+    <p>Choose your plan and subscribe for accurate football predictions!</p>
+
     <section id="plans">
       <h2>Subscription Plans</h2>
-      <div class="plan-card">
-        <h3>Correct Score Predictions</h3>
-        <p><strong>$150 Weekly</strong></p>
-      </div>
-      <div class="plan-card">
-        <h3>Halftime/Fulltime Predictions</h3>
-        <p><strong>$80 Weekly</strong></p>
-      </div>
+      <ul>
+        <li>Correct Score Predictions – $150 WEEKLY</li>
+        <li>Halftime/Fulltime Predictions – $80 WEEKLY</li>
+      </ul>
     </section>
 
     <section id="payment">
@@ -131,58 +54,105 @@
       </form>
     </section>
 
-    <div style="text-align: center; margin-top: 40px;">
-      <a href="correctscore.html" class="btn-glow">🔐 Login to Tips Page</a>
-    </div>
+    <section id="login" class="container tips" style="margin-top: 40px;">
+      <h2>🔐 Member Login</h2>
+      <p>Enter your password to access your tips page:</p>
+      <input type="password" id="password" placeholder="Enter Password">
+      <button onclick="checkPassword()">Login</button>
+      <p id="errorMessage" style="color: red; text-align: center; margin-top: 10px;"></p>
+    </section>
 
     <section class="testimonials" id="testimonials">
-      <h2>What Our Members Say</h2>
-      <div class="testimonial">
-        <p>"Your tips helped me win $500 in a week!"</p>
-        <strong>Brian K.</strong>
-        <div class="stars">⭐⭐⭐⭐⭐</div>
-      </div>
-      <div class="testimonial">
-        <p>"I was skeptical at first, but your halftime/fulltime tips are 🔥. Made $320 last weekend alone!"</p>
-        <strong>Mercy A.</strong>
-        <div class="stars">⭐⭐⭐⭐⭐</div>
+      <h2 class="section-title">What Our Members Say</h2>
+      <div class="testimonial-carousel">
+        <div class="testimonial">
+          <p>"Your tips helped me win $500 in a week!"</p>
+          <strong>Brian K.</strong>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        <div class="testimonial">
+          <p>"I was skeptical at first, but your halftime/fulltime tips are 🔥. Made $320 last weekend alone!"</p>
+          <strong>Mercy A.</strong>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        <div class="testimonial">
+          <p>"Best investment I've made this year. The correct score predictions are insanely accurate!"</p>
+          <strong>Kevin M.</strong>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        <div class="testimonial">
+          <p>"I’ve tried many tipsters, but none come close. LuninBetting is simply the best!"</p>
+          <strong>Sharon T.</strong>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        <div class="testimonial">
+          <p>"Got my subscription last week and already doubled my money. Keep them coming!"</p>
+          <strong>Daniel O.</strong>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
       </div>
     </section>
 
-    <div class="email-collect">
+    <div class="email-collect" style="margin-top: 40px; text-align: center;">
       <h3>📬 Subscribe for Updates</h3>
-      <form action="https://formspree.io/f/xblyqqwo" method="POST">
-        <input type="text" name="name" placeholder="Your name" required />
-        <input type="email" name="email" placeholder="Your email" required />
+      <form action="https://formspree.io/f/xblyqqwo" method="POST" style="max-width: 400px; margin: auto;">
+        <input type="text" name="name" placeholder="Your name" required style="padding: 10px; width: 100%; margin-bottom: 10px;" />
+        <input type="email" name="email" placeholder="Your email" required style="padding: 10px; width: 100%; margin-bottom: 10px;" />
         <button type="submit" class="btn-glow">Subscribe</button>
       </form>
     </div>
+
+    <div class="bottom-share" style="text-align: center; margin-top: 50px; padding: 20px 10px; background: #111;">
+      <p style="color: gold; font-weight: bold; margin-bottom: 10px;">💬 Share with your friends</p>
+      <a href="https://wa.me/?text=Join%20me%20on%20LuninBetting%20for%20winning%20tips!%20Visit%20https://betbestt.github.io/luninbetting" target="_blank" title="Share via WhatsApp">📤 WhatsApp</a> |
+      <a href="https://t.me/share/url?url=https://betbestt.github.io/luninbetting&text=Join%20me%20on%20LuninBetting%20for%20winning%20tips!" target="_blank" title="Share via Telegram">📨 Telegram</a> |
+      <a href="https://twitter.com/intent/tweet?text=Join%20me%20on%20LuninBetting%20for%20winning%20tips!%20https://betbestt.github.io/luninbetting" target="_blank" title="Share on Twitter">🐦 Twitter</a>
+    </div>
+
+    <footer style="text-align: center; color: #aaa; font-size: 14px; padding: 20px;">
+      <a href="faq.html" style="color: gold; text-decoration: none;">📘 FAQ & How It Works</a>
+    </footer>
+
+    <footer class="contact-footer" style="text-align: center; background: #111; color: gold; padding: 30px 10px; margin-top: 60px;">
+      <p>📧 <a href="mailto:luninbetting@gmail.com" style="color: gold; text-decoration: none;">luninbetting@gmail.com</a></p>
+      <p>📱 <a href="https://wa.me/13307283483" target="_blank" style="color: gold; text-decoration: none;">Chat with us on WhatsApp</a></p>
+    </footer>
   </main>
 
-  <div class="bottom-share">
-    <p>💬 Share with your friends</p>
-    <a href="https://wa.me/?text=Join%20me%20on%20LuninBetting%20for%20winning%20tips!%20Visit%20https://betbestt.github.io/luninbetting" target="_blank">WhatsApp</a> |
-    <a href="https://t.me/share/url?url=https://betbestt.github.io/luninbetting" target="_blank">Telegram</a> |
-    <a href="https://twitter.com/intent/tweet?text=Join%20me%20on%20LuninBetting%20for%20winning%20tips!%20https://betbestt.github.io/luninbetting" target="_blank">Twitter</a>
-  </div>
+  <script>
+    function checkPassword() {
+      const password = document.getElementById("password").value.trim();
+      const error = document.getElementById("errorMessage");
 
-  <footer>
-    <a href="faq.html" style="color: gold; text-decoration: none;"> 📘 FAQ & How It Works</a>
-  </footer>
+      if (password === "big5") {
+        window.location.href = "correct-score.html";
+      } else if (password === "small25") {
+        window.location.href = "halftime-fulltime.html";
+      } else {
+        error.textContent = "❌ Incorrect password. Try again.";
+      }
+    }
+  </script>
 
-  <footer class="contact-footer">
-    <p>📧 <a href="mailto:luninbetting@gmail.com">luninbetting@gmail.com</a></p>
-    <p>📱 <a href="https://wa.me/13307283483" target="_blank">Chat with us on WhatsApp</a></p>
-  </footer>
-
-  <a href="https://wa.me/13307283483" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">💬</a>
+  <script>
+    let current = 0;
+    const testimonials = document.querySelectorAll('.testimonial');
+    setInterval(() => {
+      testimonials[current].classList.remove('active');
+      current = (current + 1) % testimonials.length;
+      testimonials[current].classList.add('active');
+    }, 4000);
+  </script>
 
   <script>
     setTimeout(() => {
       const banner = document.getElementById('alertBanner');
-      if (banner) banner.style.display = 'none';
+      if (banner) {
+        banner.style.display = 'none';
+      }
     }, 10000);
   </script>
 </body>
 </html>
+
 
