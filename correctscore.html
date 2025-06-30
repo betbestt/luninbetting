@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,18 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Correct Score Tips - LuninBetting</title>
   <link rel="stylesheet" href="style.css"/>
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #000;
+    }
+    h1 {
+      color: gold;
+      text-align: center;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #aaa;
+      font-style: italic;
+      margin-top: -10px;
+    }
+    .tip {
+      background: #222;
+      color: #0f0;
+      padding: 12px;
+      margin: 10px 0;
+      border-left: 5px solid gold;
+      font-size: 16px;
+    }
+    .copy-btn {
+      background: gold;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      border-radius: 6px;
+    }
+    .refresh-note {
+      text-align: center;
+      margin-top: 40px;
+      background: #111;
+      color: gold;
+      padding: 20px;
+      font-weight: bold;
+    }
+    .last-updated {
+      text-align: center;
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container tips">
-    <h1>Correct Score Tips 29 JUNE 2025</h1>
-    <ul>
-      <li>ARGENTINA PRIMERA==Gimnasia y Tiro 1-0 Almagro</li>
-      <li>PSG 5-0 Inter Miami</li>
-      <li>ARGENTINA PRIMERA== ALL Boys 0-0 Atletico Atlanta</li>
-    </ul>
+
+  <div class="container">
+    <h1>🔥 Correct Score Tips</h1>
+    <p class="subtitle">Only for subscribed members — updated regularly</p>
+    <p class="last-updated">Last updated: June 29, 2025</p>
+
+    <div class="tip">⚽ ARGENTINA PRIMERA – Gimnasia y Tiro 1-0 Almagro</div>
+    <div class="tip">⚽ PSG 5-0 Inter Miami</div>
+    <div class="tip">⚽ ARGENTINA PRIMERA – All Boys 0-0 Atletico Atlanta</div>
+
+    <button class="copy-btn" onclick="copyTips()">📋 Copy All Tips</button>
   </div>
-  <div style="text-align: center; margin-top: 60px; background: #111; color: gold; padding: 20px;">
-  🔄 <strong>Keep refreshing this page — more tips will be updated often!</strong>
-</div>
+
+  <div class="refresh-note">
+    🔄 Keep refreshing this page — more tips will be updated often!
+  </div>
+
+  <script>
+    function copyTips() {
+      const tips = Array.from(document.querySelectorAll('.tip')).map(t => t.textContent).join('\\n');
+      navigator.clipboard.writeText(tips).then(() => {
+        alert('Tips copied to clipboard!');
+      });
+    }
+  </script>
+
 </body>
 </html>
+
