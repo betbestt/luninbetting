@@ -165,6 +165,41 @@
     console.error("Error loading tips:", error);
   });
 </script>
+<script>
+  const today = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
+  const tipsType = "halftime_fulltime"; // or "correct_score"
+
+  async function fetchTipsFor(date) {
+    const docRef = db.collection("tips").doc(tipsType);
+    const doc = await docRef.get();
+    if (doc.exists) {
+      const data = doc.data().tips_by_date;
+      return data && data[date] ? data[date] : [];
+    } else {
+      return [];
+    }
+  }
+
+  async function showTips(date) {
+    const tips = await fetchTipsFor(date);
+    const container = document.getElementById("tipsContainer");
+    container.innerHTML = "";
+    if (tips.length === 0) {
+      container.innerHTML = "<div class='tip'>No tips available for this date.</div>";
+    } else {
+      tips.forEach(t => {
+        const div = document.createElement("div");
+        div.className = "tip";
+        div.textContent = "⚽ " + t;
+        container.appendChild(div);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    showTips(today);
+  });
+</script>
 
 </body>
 </html>
