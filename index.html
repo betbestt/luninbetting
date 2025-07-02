@@ -160,10 +160,31 @@ setInterval(() => {
   <p>📧 <a href="mailto:luninbetting@gmail.com" style="color: gold; text-decoration: none;">luninbetting@gmail.com</a></p>
   <p>📱 <a href="https://wa.me/13307283483" target="_blank" style="color: gold; text-decoration: none;">Chat with us on WhatsApp</a></p>
 </footer>
-  <footer style="text-align: center; margin-top: 40px; padding: 20px;">
-  <a href="admin-login.html" style="color: crimson; font-weight: bold; text-decoration: none;">🔐 Admin Login</a>
-</footer>
-
+ <a href="#" onclick="adminLogin()" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: crimson;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 0 10px #000;
+  z-index: 9999;
+">
+  🔐 Admin
+</a>
+<script>
+  function adminLogin() {
+    const password = prompt("Enter Admin Password:");
+    if (password === "bigsmall254") {
+      window.location.href = "admin.html"; // Change to your actual admin page
+    } else if (password) {
+      alert("Incorrect password. Access denied.");
+    }
+  }
+</script>
 
 </body>
 </html>
