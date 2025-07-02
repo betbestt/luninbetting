@@ -1,59 +1,92 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Login - LuninBetting</title>
+  <title>Admin Panel - LuninBetting</title>
   <link rel="stylesheet" href="style.css"/>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <style>
     body {
       background: #111;
       color: white;
       font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    .login-box {
-      background: #222;
       padding: 30px;
-      border-radius: 10px;
-      text-align: center;
     }
-    input, button {
+    h1, h2 {
+      color: gold;
+    }
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      height: 120px;
       padding: 10px;
-      width: 300px;
-      margin: 10px 0;
-      border-radius: 6px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 10px;
+      font-family: monospace;
     }
     .btn {
       background: gold;
       color: black;
+      padding: 10px 20px;
       font-weight: bold;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
+    }
+    .status {
+      margin-top: 10px;
+      font-weight: bold;
+      color: lime;
     }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPass" placeholder="Enter admin password">
-    <button class="btn" onclick="login()">Login</button>
-    <p id="error" style="color:red;"></p>
+  <h1>Admin Panel - LuninBetting</h1>
+
+  <div class="section">
+    <h2>Correct Score Tips</h2>
+    <textarea id="correctInput" placeholder="One tip per line..."></textarea><br>
+    <button class="btn" onclick="saveTips('correct_score')">Save to Firestore</button>
+    <div class="status" id="correctStatus"></div>
+  </div>
+
+  <div class="section">
+    <h2>Halftime / Fulltime Tips</h2>
+    <textarea id="halftimeInput" placeholder="One tip per line..."></textarea><br>
+    <button class="btn" onclick="saveTips('halftime_fulltime')">Save to Firestore</button>
+    <div class="status" id="halftimeStatus"></div>
   </div>
 
   <script>
-    function login() {
-      const input = document.getElementById("adminPass").value;
-      if (input === "admin2025") {
-        window.location.href = "admin.html";
-      } else {
-        document.getElementById("error").textContent = "Incorrect password!";
-      }
+    const firebaseConfig = {
+      apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
+      authDomain: "luninbetting-f7752.firebaseapp.com",
+      projectId: "luninbetting-f7752",
+      storageBucket: "luninbetting-f7752.firebasestorage.app",
+      messagingSenderId: "217827651489",
+      appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function saveTips(collection) {
+      const inputId = collection === "correct_score" ? "correctInput" : "halftimeInput";
+      const statusId = collection === "correct_score" ? "correctStatus" : "halftimeStatus";
+      const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t !== "");
+
+      db.collection("tips").doc(collection).set({ tips })
+        .then(() => {
+          document.getElementById(statusId).innerText = "✅ Tips updated successfully!";
+        })
+        .catch((error) => {
+          document.getElementById(statusId).innerText = "❌ Error saving tips: " + error;
+        });
     }
   </script>
 </body>
 </html>
+
