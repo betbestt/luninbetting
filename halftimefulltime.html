@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Halftime/Fulltime Tips - LuninBetting</title>
   <link rel="stylesheet" href="style.css"/>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <style>
     body {
       background: #000;
@@ -21,10 +23,7 @@
       border-radius: 12px;
       box-shadow: 0 0 10px #000;
     }
-    h1 {
-      color: gold;
-      text-align: center;
-    }
+    h1 { color: gold; text-align: center; }
     p.subtitle {
       text-align: center;
       color: #aaa;
@@ -58,12 +57,6 @@
       padding: 20px;
       font-weight: bold;
     }
-    .last-updated {
-      text-align: center;
-      color: #888;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
     .tab-btn {
       padding: 10px 15px;
       margin: 0 5px 20px;
@@ -91,78 +84,87 @@
 </head>
 <body>
 
+<div class="container">
+  <h1>🎯 Halftime / Fulltime Tips</h1>
+  <p class="subtitle">Only for subscribed members — updated live</p>
 
-
-  <div class="container">
-    <h1>🎯 Halftime / Fulltime Tips</h1>
-    <p class="subtitle">Only for subscribed members — updated regularly. Advisable to bet singles always</p>
-    <p class="last-updated">Last updated: July 2nd, 2025</p>
-
-    <div style="text-align: center;">
-      <button onclick="showTab('day1')" class="tab-btn">📅 1st July</button>
-      <button onclick="showTab('day2')" class="tab-btn">📅 2nd July</button>
-    </div>
-
-    <div id="day1" class="tab-content">
-      <h2>Tips for 1st July 2025</h2>
-      <div class="tip">⚽ FINLAND VEIKKAUSILIGA - KuPs vs Ginstan- Over 2.5 for the home team***WON ✅</div>
-      <div class="tip">⚽ Real Madrid vs Juventus - Over 3.5**Lost❌</div>
-      <div class="tip">⚽FINLAND KAKKONEN - OsPa vs JBK - Both halves over 1.5***WON✅</div>
-      <div class="tip">⚽FINLAND KAKKONEN - TP-47 vs SJK Akatemia - Both halves over 1.5***WON✅</div>
-    </div>
-    <button class="copy-btn" onclick="copyTips()">📋 Copy All Tips</button>
-
-    <div class="back-link">
-      <a href="index.html">⬅️ Back to Dashboard</a>
-    </div>
-    <div id="day2" class="tab-content" style="display:none;">
-      <h2>Tips for 2nd July 2025</h2>
-      <div class="tip">⚽ FINLAND SUMUMEN WOMEN- Aland vs HPS - Both halves over 1.5</div>
-      <div class="tip">⚽ LOADING</div>
-      <div class="tip">⚽ LOADING</div>
-    </div>
-    <button class="copy-btn" onclick="copyTips()">📋 Copy All Tips</button>
-
-    <div class="back-link">
-      <a href="index.html">⬅️ Back to Dashboard</a>
-    </div>
+  <div style="text-align: center;" id="tab-buttons">
+    <!-- Tab buttons here -->
   </div>
 
-  <div class="refresh-note">
-    🔄 Keep refreshing this page — more tips will be updated often!
+  <div id="tips-container">
+    <!-- Tips will load here -->
   </div>
+
+  <button class="copy-btn" onclick="copyTips()">📋 Copy All Tips</button>
+
+  <div class="back-link">
+    <a href="index.html">⬅️ Back to Dashboard</a>
+  </div>
+</div>
+
+<div class="refresh-note">
+  🔄 Keep refreshing this page — more tips will be updated often!
+</div>
 
 <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
+    authDomain: "luninbetting-f7752.firebaseapp.com",
+    projectId: "luninbetting-f7752",
+    storageBucket: "luninbetting-f7752.appspot.com",
+    messagingSenderId: "217827651489",
+    appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  let allTips = {};
+
+  function showTipsForDate(date) {
+    const tipsContainer = document.getElementById('tips-container');
+    tipsContainer.innerHTML = `<h2 style="color:gold;">Tips for ${date}</h2>`;
+    if (allTips[date]) {
+      allTips[date].forEach(tip => {
+        const div = document.createElement('div');
+        div.className = 'tip';
+        div.textContent = "⚽ " + tip;
+        tipsContainer.appendChild(div);
+      });
+    } else {
+      tipsContainer.innerHTML += '<p style="color:#aaa;">No tips available for this date.</p>';
+    }
+  }
+
   function copyTips() {
-    const tips = Array.from(document.querySelectorAll('.tab-content'))
-      .filter(tab => tab.style.display !== 'none')
-      .flatMap(tab => Array.from(tab.querySelectorAll('.tip')))
-      .map(t => t.textContent)
-      .join('\n');
+    const tips = Array.from(document.querySelectorAll('.tip')).map(t => t.textContent).join('\n');
     navigator.clipboard.writeText(tips).then(() => {
       alert('Tips copied to clipboard!');
     });
   }
 
-  function showTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(tab => {
-      tab.style.display = 'none';
-    });
-    document.getElementById(tabId).style.display = 'block';
-  }
+  db.collection("tips").doc("halftime_fulltime").get().then(doc => {
+    if (doc.exists) {
+      allTips = doc.data().tips_by_date || {};
+      const tabButtons = document.getElementById('tab-buttons');
+      const dates = Object.keys(allTips).sort().reverse();
 
-  window.onload = function () {
-    const today = new Date().getDate();
-    if (today === 30) {
-      showTab('day2');
+      dates.forEach((date, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'tab-btn';
+        btn.textContent = `📅 ${date}`;
+        btn.onclick = () => showTipsForDate(date);
+        tabButtons.appendChild(btn);
+        if (index === 0) showTipsForDate(date); // show latest on load
+      });
     } else {
-      showTab('day1');
+      document.getElementById('tips-container').innerHTML = "<p style='text-align:center;'>No tips found.</p>";
     }
-  };
+  }).catch(error => {
+    console.error("Error loading tips:", error);
+  });
 </script>
 
 </body>
 </html>
-
-
-
