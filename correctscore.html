@@ -24,12 +24,6 @@
       box-shadow: 0 0 10px #000;
     }
     h1 { color: gold; text-align: center; }
-    p.subtitle {
-      text-align: center;
-      color: #aaa;
-      font-style: italic;
-      margin-top: -10px;
-    }
     .tip {
       background: #222;
       color: #0f0;
@@ -37,6 +31,20 @@
       margin: 10px 0;
       border-left: 5px solid gold;
       font-size: 16px;
+    }
+    .tab-btn {
+      padding: 10px 15px;
+      margin: 0 5px 20px;
+      background: #222;
+      color: gold;
+      border: 1px solid gold;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .tab-btn:hover {
+      background: gold;
+      color: black;
     }
     .copy-btn {
       background: gold;
@@ -57,20 +65,6 @@
       padding: 20px;
       font-weight: bold;
     }
-    .tab-btn {
-      padding: 10px 15px;
-      margin: 0 5px 20px;
-      background: #222;
-      color: gold;
-      border: 1px solid gold;
-      cursor: pointer;
-      border-radius: 6px;
-      font-weight: bold;
-    }
-    .tab-btn:hover {
-      background: gold;
-      color: black;
-    }
     .back-link {
       text-align: center;
       margin-top: 30px;
@@ -83,127 +77,87 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🔥 Correct Score Tips</h1>
-    <p class="subtitle">Only for subscribed members — updated live</p>
 
-    <div style="text-align: center;" id="tab-buttons">
-      <!-- Tabs will be inserted here -->
-    </div>
+<div class="container">
+  <h1>🔥 Correct Score Tips</h1>
+  <p style="text-align: center; font-style: italic; color: #aaa;">Updated daily for subscribed members</p>
 
-    <div id="tips-container">
-      <!-- Tips will appear here -->
-    </div>
+  <div id="tab-buttons" style="text-align: center;"></div>
+  <div id="tips-container"></div>
 
-    <button class="copy-btn" onclick="copyTips()">📋 Copy All Tips</button>
+  <button class="copy-btn" onclick="copyTips()">📋 Copy All Tips</button>
 
-    <div class="back-link">
-      <a href="index.html">⬅️ Back to Dashboard</a>
-    </div>
+  <div class="back-link">
+    <a href="index.html">⬅️ Back to Dashboard</a>
   </div>
+</div>
 
-  <div class="refresh-note">
-    🔄 Keep refreshing this page — more tips will be updated often!
-  </div>
+<div class="refresh-note">
+  🔄 Refresh this page for latest tips
+</div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
-      authDomain: "luninbetting-f7752.firebaseapp.com",
-      projectId: "luninbetting-f7752",
-      storageBucket: "luninbetting-f7752.appspot.com",
-      messagingSenderId: "217827651489",
-      appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
-    };
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
+    authDomain: "luninbetting-f7752.firebaseapp.com",
+    projectId: "luninbetting-f7752",
+    storageBucket: "luninbetting-f7752.appspot.com",
+    messagingSenderId: "217827651489",
+    appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
+  };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    let allTips = {};
+  let allTips = {};
 
-    function showTipsForDate(date) {
-      const tipsContainer = document.getElementById('tips-container');
-      tipsContainer.innerHTML = `<h2 style="color:gold;">Tips for ${date}</h2>`;
-      if (allTips[date]) {
-        allTips[date].forEach(tip => {
-          const div = document.createElement('div');
-          div.className = 'tip';
-          div.textContent = "⚽ " + tip;
-          tipsContainer.appendChild(div);
-        });
-      } else {
-        tipsContainer.innerHTML += '<p style="color:#aaa;">No tips available for this date.</p>';
-      }
-    }
-
-    function copyTips() {
-      const tips = Array.from(document.querySelectorAll('.tip')).map(t => t.textContent).join('\n');
-      navigator.clipboard.writeText(tips).then(() => {
-        alert('Tips copied to clipboard!');
-      });
-    }
-
-    db.collection("tips").doc("correct_score").get().then(doc => {
-      if (doc.exists) {
-        allTips = doc.data().tips_by_date || {};
-        const tabButtons = document.getElementById('tab-buttons');
-        const dates = Object.keys(allTips).sort().reverse();
-
-        dates.forEach((date, index) => {
-          const btn = document.createElement('button');
-          btn.className = 'tab-btn';
-          btn.textContent = `📅 ${date}`;
-          btn.onclick = () => showTipsForDate(date);
-          tabButtons.appendChild(btn);
-          if (index === 0) showTipsForDate(date); // load latest
-        });
-      } else {
-        document.getElementById('tips-container').innerHTML = "<p style='text-align:center;'>No tips found.</p>";
-      }
-    }).catch(error => {
-      console.error("Error fetching tips:", error);
-    });
-  </script>
-  <script>
-  const today = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
-  const tipsType = "halftime_fulltime"; // or "correct_score"
-
-  async function fetchTipsFor(date) {
-    const docRef = db.collection("tips").doc(tipsType);
-    const doc = await docRef.get();
-    if (doc.exists) {
-      const data = doc.data().tips_by_date;
-      return data && data[date] ? data[date] : [];
-    } else {
-      return [];
-    }
-  }
-
-  async function showTips(date) {
-    const tips = await fetchTipsFor(date);
-    const container = document.getElementById("tipsContainer");
-    container.innerHTML = "";
+  function showTipsForDate(date) {
+    const container = document.getElementById('tips-container');
+    container.innerHTML = `<h2 style="color:gold;">Tips for ${date}</h2>`;
+    const tips = allTips[date] || [];
     if (tips.length === 0) {
-      container.innerHTML = "<div class='tip'>No tips available for this date.</div>";
+      container.innerHTML += `<div class="tip">No tips available for ${date}.</div>`;
     } else {
-      tips.forEach(t => {
-        const div = document.createElement("div");
-        div.className = "tip";
-        div.textContent = "⚽ " + t;
+      tips.forEach(tip => {
+        const div = document.createElement('div');
+        div.className = 'tip';
+        div.textContent = '⚽ ' + tip;
         container.appendChild(div);
       });
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    showTips(today);
+  function copyTips() {
+    const tips = Array.from(document.querySelectorAll('.tip')).map(t => t.textContent).join('\n');
+    navigator.clipboard.writeText(tips).then(() => {
+      alert('Tips copied to clipboard!');
+    });
+  }
+
+  db.collection("tips").doc("correct_score").get().then(doc => {
+    if (doc.exists) {
+      allTips = doc.data().tips_by_date || {};
+      const dates = Object.keys(allTips).sort().reverse();
+      const tabContainer = document.getElementById("tab-buttons");
+
+      dates.forEach((date, index) => {
+        const btn = document.createElement("button");
+        btn.className = "tab-btn";
+        btn.textContent = `📅 ${date}`;
+        btn.onclick = () => showTipsForDate(date);
+        tabContainer.appendChild(btn);
+
+        if (index === 0) {
+          showTipsForDate(date); // Show most recent on load
+        }
+      });
+    } else {
+      document.getElementById('tips-container').innerHTML = "<p style='text-align:center;'>No tips found in Firestore.</p>";
+    }
+  }).catch(error => {
+    console.error("Error fetching tips:", error);
   });
 </script>
 
 </body>
 </html>
-
-
-
-
-
