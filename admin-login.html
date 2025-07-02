@@ -49,14 +49,14 @@
   <div class="section">
     <h2>Correct Score Tips</h2>
     <textarea id="correctInput" placeholder="One tip per line..."></textarea><br>
-    <button class="btn" onclick="saveTips('correct_score')">Save to Firestore</button>
+    <button class="btn" onclick="saveTips('correct_score')">Save Correct Score Tips</button>
     <div class="status" id="correctStatus"></div>
   </div>
 
   <div class="section">
     <h2>Halftime / Fulltime Tips</h2>
     <textarea id="halftimeInput" placeholder="One tip per line..."></textarea><br>
-    <button class="btn" onclick="saveTips('halftime_fulltime')">Save to Firestore</button>
+    <button class="btn" onclick="saveTips('halftime_fulltime')">Save HT/FT Tips</button>
     <div class="status" id="halftimeStatus"></div>
   </div>
 
@@ -65,7 +65,7 @@
       apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
       authDomain: "luninbetting-f7752.firebaseapp.com",
       projectId: "luninbetting-f7752",
-      storageBucket: "luninbetting-f7752.firebasestorage.app",
+      storageBucket: "luninbetting-f7752.appspot.com",
       messagingSenderId: "217827651489",
       appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
     };
@@ -73,20 +73,36 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    function saveTips(collection) {
-      const inputId = collection === "correct_score" ? "correctInput" : "halftimeInput";
-      const statusId = collection === "correct_score" ? "correctStatus" : "halftimeStatus";
-      const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t !== "");
+    function getTodayDate() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
 
-      db.collection("tips").doc(collection).set({ tips })
+    function saveTips(docName) {
+      const inputId = docName === "correct_score" ? "correctInput" : "halftimeInput";
+      const statusId = docName === "correct_score" ? "correctStatus" : "halftimeStatus";
+      const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t.trim() !== "");
+
+      if (tips.length === 0) {
+        document.getElementById(statusId).innerText = "❌ Please enter some tips.";
+        return;
+      }
+
+      const today = getTodayDate();
+      const update = {};
+      update[`tips_by_date.${today}`] = tips;
+
+      db.collection("tips").doc(docName).set(update, { merge: true })
         .then(() => {
-          document.getElementById(statusId).innerText = "✅ Tips updated successfully!";
+          document.getElementById(statusId).innerText = "✅ Tips updated successfully for " + today;
         })
         .catch((error) => {
-          document.getElementById(statusId).innerText = "❌ Error saving tips: " + error;
+          document.getElementById(statusId).innerText = "❌ Error: " + error.message;
         });
     }
   </script>
 </body>
 </html>
-
