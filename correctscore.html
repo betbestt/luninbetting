@@ -82,8 +82,8 @@
   <h1>🔥 Correct Score Tips</h1>
   <p style="text-align: center; font-style: italic; color: #aaa;">Updated daily for subscribed members</p>
 
-  <div id="tab-buttons" style="text-align: center;"></div>
-  <div id="tips-container"></div>
+  <div id="tab-buttons" style="text-align: center;">Loading dates...</div>
+  <div id="tips-container" style="margin-top: 20px;"></div>
 
   <button class="copy-btn" onclick="copyTips()">📋 Copy All Tips</button>
 
@@ -93,7 +93,7 @@
 </div>
 
 <div class="refresh-note">
-  🔄 Refresh this page for latest tips
+  🔄 Refresh this page for the latest tips
 </div>
 
 <script>
@@ -134,29 +134,37 @@
     });
   }
 
-  db.collection("tips").doc("correct_score").get().then(doc => {
-    if (doc.exists) {
-      allTips = doc.data().tips_by_date || {};
-      const dates = Object.keys(allTips).sort().reverse();
-      const tabContainer = document.getElementById("tab-buttons");
+  db.collection("tips").doc("correct_score").get()
+    .then(doc => {
+      if (doc.exists && doc.data().tips_by_date) {
+        allTips = doc.data().tips_by_date;
+        const dates = Object.keys(allTips).sort().reverse();
+        const tabContainer = document.getElementById("tab-buttons");
+        tabContainer.innerHTML = ""; // Clear 'Loading...' text
 
-      dates.forEach((date, index) => {
-        const btn = document.createElement("button");
-        btn.className = "tab-btn";
-        btn.textContent = `📅 ${date}`;
-        btn.onclick = () => showTipsForDate(date);
-        tabContainer.appendChild(btn);
-
-        if (index === 0) {
-          showTipsForDate(date); // Show most recent on load
+        if (dates.length === 0) {
+          tabContainer.innerHTML = "<p>No tips available yet.</p>";
         }
-      });
-    } else {
-      document.getElementById('tips-container').innerHTML = "<p style='text-align:center;'>No tips found in Firestore.</p>";
-    }
-  }).catch(error => {
-    console.error("Error fetching tips:", error);
-  });
+
+        dates.forEach((date, index) => {
+          const btn = document.createElement("button");
+          btn.className = "tab-btn";
+          btn.textContent = `📅 ${date}`;
+          btn.onclick = () => showTipsForDate(date);
+          tabContainer.appendChild(btn);
+
+          if (index === 0) {
+            showTipsForDate(date); // Show latest on load
+          }
+        });
+      } else {
+        document.getElementById('tab-buttons').innerHTML = "<p>No tips found in Firestore.</p>";
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching tips:", error);
+      document.getElementById('tab-buttons').innerHTML = "<p>Error loading tips.</p>";
+    });
 </script>
 
 </body>
