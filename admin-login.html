@@ -27,6 +27,15 @@
       margin-bottom: 10px;
       font-family: monospace;
     }
+    input[type="date"] {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: none;
+      font-family: sans-serif;
+      background: #222;
+      color: gold;
+    }
     .btn {
       background: gold;
       color: black;
@@ -35,6 +44,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      margin-right: 10px;
     }
     .status {
       margin-top: 10px;
@@ -48,67 +58,114 @@
 
   <div class="section">
     <h2>Correct Score Tips</h2>
+    <label>Select Date:</label><br>
+    <input type="date" id="correctDate"><br>
     <textarea id="correctInput" placeholder="One tip per line..."></textarea><br>
-    <button class="btn" onclick="saveTips('correct_score')">Save Correct Score Tips</button>
+    <button class="btn" onclick="saveTips('correct_score')">💾 Save</button>
+    <button class="btn" onclick="loadTips('correct_score')">📥 Load</button>
+    <button class="btn" onclick="deleteTips('correct_score')">🗑 Delete</button>
     <div class="status" id="correctStatus"></div>
   </div>
 
   <div class="section">
     <h2>Halftime / Fulltime Tips</h2>
+    <label>Select Date:</label><br>
+    <input type="date" id="halftimeDate"><br>
     <textarea id="halftimeInput" placeholder="One tip per line..."></textarea><br>
-    <button class="btn" onclick="saveTips('halftime_fulltime')">Save HT/FT Tips</button>
+    <button class="btn" onclick="saveTips('halftime_fulltime')">💾 Save</button>
+    <button class="btn" onclick="loadTips('halftime_fulltime')">📥 Load</button>
+    <button class="btn" onclick="deleteTips('halftime_fulltime')">🗑 Delete</button>
     <div class="status" id="halftimeStatus"></div>
   </div>
 
   <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
-    authDomain: "luninbetting-f7752.firebaseapp.com",
-    projectId: "luninbetting-f7752",
-    storageBucket: "luninbetting-f7752.appspot.com",
-    messagingSenderId: "217827651489",
-    appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
+      authDomain: "luninbetting-f7752.firebaseapp.com",
+      projectId: "luninbetting-f7752",
+      storageBucket: "luninbetting-f7752.appspot.com",
+      messagingSenderId: "217827651489",
+      appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
+    };
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-  function getTodayDate() {
-    const d = new Date();
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
-  function saveTips(docName) {
-  const inputId = docName === "correct_score" ? "correctInput" : "halftimeInput";
-  const statusId = docName === "correct_score" ? "correctStatus" : "halftimeStatus";
-  const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t.trim() !== "");
-
-  if (tips.length === 0) {
-    document.getElementById(statusId).innerText = "❌ Please enter some tips.";
-    return;
-  }
-
-  const today = getTodayDate();
-
-  const update = {
-    tips_by_date: {
-      [today]: tips
+    function getTodayDate() {
+      const d = new Date();
+      return d.toISOString().split("T")[0];
     }
-  };
 
-  db.collection("tips").doc(docName).set(update, { merge: true })
-    .then(() => {
-      document.getElementById(statusId).innerText = "✅ Tips updated successfully for " + today;
-    })
-    .catch((error) => {
-      document.getElementById(statusId).innerText = "❌ Error: " + error.message;
-    });
-}
+    function getInputRefs(docName) {
+      return {
+        inputId: docName === "correct_score" ? "correctInput" : "halftimeInput",
+        dateId: docName === "correct_score" ? "correctDate" : "halftimeDate",
+        statusId: docName === "correct_score" ? "correctStatus" : "halftimeStatus"
+      };
+    }
 
-</script>
+    function saveTips(docName) {
+      const { inputId, dateId, statusId } = getInputRefs(docName);
+      const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t.trim() !== "");
+      const date = document.getElementById(dateId).value || getTodayDate();
 
+      if (tips.length === 0) {
+        document.getElementById(statusId).innerText = "❌ Please enter some tips.";
+        return;
+      }
+
+      const update = {};
+      update[`tips_by_date.${date}`] = tips;
+
+      db.collection("tips").doc(docName).set(update, { merge: true })
+        .then(() => {
+          document.getElementById(statusId).innerText = `✅ Saved ${tips.length} tips for ${date}`;
+        })
+        .catch(err => {
+          document.getElementById(statusId).innerText = "❌ Error: " + err.message;
+        });
+    }
+
+    function loadTips(docName) {
+      const { inputId, dateId, statusId } = getInputRefs(docName);
+      const date = document.getElementById(dateId).value || getTodayDate();
+
+      db.collection("tips").doc(docName).get().then(doc => {
+        const data = doc.data()?.tips_by_date?.[date];
+        if (data && Array.isArray(data)) {
+          document.getElementById(inputId).value = data.join("\n");
+          document.getElementById(statusId).innerText = `✅ Loaded ${data.length} tips for ${date}`;
+        } else {
+          document.getElementById(inputId).value = "";
+          document.getElementById(statusId).innerText = "⚠️ No tips found for this date.";
+        }
+      }).catch(err => {
+        document.getElementById(statusId).innerText = "❌ Error: " + err.message;
+      });
+    }
+
+    function deleteTips(docName) {
+      const { dateId, statusId, inputId } = getInputRefs(docName);
+      const date = document.getElementById(dateId).value || getTodayDate();
+      const update = {};
+      update[`tips_by_date.${date}`] = firebase.firestore.FieldValue.delete();
+
+      db.collection("tips").doc(docName).update(update)
+        .then(() => {
+          document.getElementById(statusId).innerText = `🗑 Deleted tips for ${date}`;
+          document.getElementById(inputId).value = "";
+        })
+        .catch(err => {
+          document.getElementById(statusId).innerText = "❌ Error: " + err.message;
+        });
+    }
+
+    // Set today's date as default in both date pickers
+    window.onload = () => {
+      const today = getTodayDate();
+      document.getElementById("correctDate").value = today;
+      document.getElementById("halftimeDate").value = today;
+    };
+  </script>
 </body>
 </html>
