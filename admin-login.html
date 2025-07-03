@@ -105,26 +105,32 @@
     }
 
     function saveTips(docName) {
-      const { inputId, dateId, statusId } = getInputRefs(docName);
-      const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t.trim() !== "");
-      const date = document.getElementById(dateId).value || getTodayDate();
+  const inputId = docName === "correct_score" ? "correctInput" : "halftimeInput";
+  const statusId = docName === "correct_score" ? "correctStatus" : "halftimeStatus";
+  const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t.trim() !== "");
 
-      if (tips.length === 0) {
-        document.getElementById(statusId).innerText = "❌ Please enter some tips.";
-        return;
-      }
+  if (tips.length === 0) {
+    document.getElementById(statusId).innerText = "❌ Please enter some tips.";
+    return;
+  }
 
-      const update = {};
-      update[`tips_by_date.${date}`] = tips;
+  const today = getTodayDate();
 
-      db.collection("tips").doc(docName).set(update, { merge: true })
-        .then(() => {
-          document.getElementById(statusId).innerText = `✅ Saved ${tips.length} tips for ${date}`;
-        })
-        .catch(err => {
-          document.getElementById(statusId).innerText = "❌ Error: " + err.message;
-        });
+  const update = {
+    tips_by_date: {
+      [today]: tips
     }
+  };
+
+  db.collection("tips").doc(docName).set(update, { merge: true })
+    .then(() => {
+      document.getElementById(statusId).innerText = "✅ Tips updated successfully for " + today;
+    })
+    .catch((error) => {
+      document.getElementById(statusId).innerText = "❌ Error: " + error.message;
+    });
+}
+
 
     function loadTips(docName) {
       const { inputId, dateId, statusId } = getInputRefs(docName);
