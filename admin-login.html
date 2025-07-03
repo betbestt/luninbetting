@@ -61,48 +61,52 @@
   </div>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
-      authDomain: "luninbetting-f7752.firebaseapp.com",
-      projectId: "luninbetting-f7752",
-      storageBucket: "luninbetting-f7752.appspot.com",
-      messagingSenderId: "217827651489",
-      appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWe38Ot2XoxUN2uiSMmGaxerGzV3d99-E",
+    authDomain: "luninbetting-f7752.firebaseapp.com",
+    projectId: "luninbetting-f7752",
+    storageBucket: "luninbetting-f7752.appspot.com",
+    messagingSenderId: "217827651489",
+    appId: "1:217827651489:web:1e7ae251bf10dda4a465e0"
+  };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    function getTodayDate() {
-      const d = new Date();
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
+  function getTodayDate() {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function saveTips(docName) {
+    const inputId = docName === "correct_score" ? "correctInput" : "halftimeInput";
+    const statusId = docName === "correct_score" ? "correctStatus" : "halftimeStatus";
+    const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t.trim() !== "");
+
+    if (tips.length === 0) {
+      document.getElementById(statusId).innerText = "❌ Please enter some tips.";
+      return;
     }
 
-    function saveTips(docName) {
-      const inputId = docName === "correct_score" ? "correctInput" : "halftimeInput";
-      const statusId = docName === "correct_score" ? "correctStatus" : "halftimeStatus";
-      const tips = document.getElementById(inputId).value.trim().split("\n").filter(t => t.trim() !== "");
+    const today = getTodayDate();
+    const tipsRef = db.collection("tips").doc(docName);
 
-      if (tips.length === 0) {
-        document.getElementById(statusId).innerText = "❌ Please enter some tips.";
-        return;
-      }
+    tipsRef.get().then(doc => {
+      const existing = doc.exists && doc.data().tips_by_date ? doc.data().tips_by_date : {};
+      existing[today] = tips;
+      return tipsRef.set({ tips_by_date: existing });
+    })
+    .then(() => {
+      document.getElementById(statusId).innerText = "✅ Tips updated successfully for " + today;
+    })
+    .catch((error) => {
+      document.getElementById(statusId).innerText = "❌ Error: " + error.message;
+    });
+  }
+</script>
 
-      const today = getTodayDate();
-      const update = {};
-      update[`tips_by_date.${today}`] = tips;
-
-      db.collection("tips").doc(docName).set(update, { merge: true })
-        .then(() => {
-          document.getElementById(statusId).innerText = "✅ Tips updated successfully for " + today;
-        })
-        .catch((error) => {
-          document.getElementById(statusId).innerText = "❌ Error: " + error.message;
-        });
-    }
-  </script>
 </body>
 </html>
